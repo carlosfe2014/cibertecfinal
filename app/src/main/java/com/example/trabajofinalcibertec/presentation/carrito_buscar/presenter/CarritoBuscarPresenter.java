@@ -1,6 +1,9 @@
 package com.example.trabajofinalcibertec.presentation.carrito_buscar.presenter;
 
 import com.example.trabajofinalcibertec.data.entities.Producto;
+import com.example.trabajofinalcibertec.data.entities.responses.BusquedaResponse;
+import com.example.trabajofinalcibertec.data.entities.responses.ProductoResponse;
+import com.example.trabajofinalcibertec.domain.buscarproducto_interactor.IBuscarProductoInteractor;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.ICarritoBuscarContract;
 
 import java.util.ArrayList;
@@ -8,11 +11,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
 public class CarritoBuscarPresenter implements ICarritoBuscarContract.IPresenter {
     ICarritoBuscarContract.IView view;
 
+    private final IBuscarProductoInteractor interactor;
+
+    private Disposable disposable;
+
     @Inject
-    public CarritoBuscarPresenter() {
+    public CarritoBuscarPresenter(IBuscarProductoInteractor interactor) {
+        this.interactor = interactor;
     }
 
     @Override
@@ -31,12 +42,33 @@ public class CarritoBuscarPresenter implements ICarritoBuscarContract.IPresenter
     }
 
     @Override
-    public void buscarProductos(String query) {
-        List<Producto> carritoList = new ArrayList<>();
-        carritoList.add(new Producto(1,"Inka Cola 1 Lt", "Bebina gasseosa", "ada", 6.10,6.20,6.0));
-        carritoList.add(new Producto(1,"Coca Cola 1 Lt", "Bebina gasseosa", "ada", 5.10,5.20,5.0));
-        carritoList.add(new Producto(1,"Pepsi Cola 1 Lt", "Bebina gasseosa", "ada", 4.10,4.20,4.0));
-        carritoList.add(new Producto(1,"Kola Real 1 Lt", "Bebina gasseosa", "ada", 2.10,2.20,1.9));
-        view.getBuscarProductosSuccess(carritoList);
+    public void searchProductos(String query) {
+
+        interactor.searchProductos(query)
+                .subscribe(new Observer<BusquedaResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(BusquedaResponse busquedaResponse) {
+                        if(isViewAttached()) {
+                            view.getSearchProductosSuccess(busquedaResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if(isViewAttached()) {
+                            view.showError(e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 }

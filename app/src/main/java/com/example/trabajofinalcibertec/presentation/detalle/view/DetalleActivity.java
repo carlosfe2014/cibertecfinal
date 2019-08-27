@@ -4,11 +4,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.trabajofinalcibertec.MyApplication;
 import com.example.trabajofinalcibertec.R;
+import com.example.trabajofinalcibertec.base.BaseActivity;
 import com.example.trabajofinalcibertec.data.entities.Producto;
+
+import com.example.trabajofinalcibertec.di.modules.PresentationModule;
 import com.example.trabajofinalcibertec.presentation.detalle.IDetalleContract;
 import com.example.trabajofinalcibertec.presentation.detalle.presenter.DetallePresenter;
 
@@ -17,7 +21,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class DetalleActivity extends AppCompatActivity implements IDetalleContract.IView {
+public class DetalleActivity extends BaseActivity implements IDetalleContract.IView {
 
     private RecyclerView recyclerViewDetalle;
     private DetalleAdapter detalleAdapter;
@@ -32,9 +36,16 @@ public class DetalleActivity extends AppCompatActivity implements IDetalleContra
         setContentView(R.layout.activity_detalle);
 
 
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+
         //presenter = new DetallePresenter();
 
-        ((MyApplication) getApplication()).getAppComponent().inject(DetalleActivity.this);
+        //((MyApplication) getApplication()).getApplicationComponent().inject(DetalleActivity.this);
         presenter.attachView(this);
 
         recyclerViewDetalle = findViewById(R.id.rvListaDetalle);
@@ -45,6 +56,23 @@ public class DetalleActivity extends AppCompatActivity implements IDetalleContra
         recyclerViewDetalle.setAdapter(detalleAdapter);
         presenter.getAllProductos();
 
+    }
+
+    @Override
+    protected void resolveDaggerDependency() {
+
+    }
+
+    @Override
+    protected int getContentView() {
+        return 0;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) finish();
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

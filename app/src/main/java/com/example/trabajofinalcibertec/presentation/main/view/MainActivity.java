@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity implements IMainContract.IVi
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements IMainContract.IVi
             }
         });
 
-
-        ((MyApplication) getApplication()).getAppComponent().inject(MainActivity.this);
+        presenter = new MainPresenter();
+        //((MyApplication) getApplication()).getAppComponent().inject(MainActivity.this);
         presenter.attachView(this);
 
         tvListaComprasVacia = findViewById(R.id.tvListaComprasVacia);
@@ -74,18 +80,10 @@ public class MainActivity extends AppCompatActivity implements IMainContract.IVi
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
+        if (item.getItemId() == android.R.id.home) finish();
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void showError(String errorMsg) {

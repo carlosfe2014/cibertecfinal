@@ -1,10 +1,18 @@
 package com.example.trabajofinalcibertec.data.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Comentario {
     private int id;
     private int idProducto;
+
+    @SerializedName("usuario")
     private String autor;
+
+    @SerializedName("comentario")
     private String mensaje;
+
+
     private String fecha;
 
 

@@ -2,12 +2,14 @@ package com.example.trabajofinalcibertec;
 
 import android.app.Application;
 
-import com.example.trabajofinalcibertec.di.components.DaggerPresentationComponent;
-import com.example.trabajofinalcibertec.di.components.PresentationComponent;
-import com.example.trabajofinalcibertec.di.modules.PresentationModule;
+import com.example.trabajofinalcibertec.di.components.ApplicationComponent;
+
+import com.example.trabajofinalcibertec.di.components.DaggerApplicationComponent;
+import com.example.trabajofinalcibertec.di.modules.ApplicationModule;
+
 
 public class MyApplication extends Application {
-    private PresentationComponent appComponent;
+    private ApplicationComponent appComponent;
 
     @Override
     public void onCreate() {
@@ -16,13 +18,16 @@ public class MyApplication extends Application {
     }
 
     void inicializarComponent(){
-        appComponent = DaggerPresentationComponent
-                .builder()
-                .presentationModule(new PresentationModule())
-                .build();
+        appComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(this)).build();
     }
 
-    public PresentationComponent getAppComponent() {
+
+    public ApplicationComponent getApplicationComponent() {
         return appComponent;
+    }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
     }
 }

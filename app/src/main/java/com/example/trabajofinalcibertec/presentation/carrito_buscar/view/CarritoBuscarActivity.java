@@ -1,20 +1,28 @@
 package com.example.trabajofinalcibertec.presentation.carrito_buscar.view;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.trabajofinalcibertec.MyApplication;
 import com.example.trabajofinalcibertec.R;
+import com.example.trabajofinalcibertec.base.BaseActivity;
 import com.example.trabajofinalcibertec.data.entities.Producto;
+import com.example.trabajofinalcibertec.data.entities.responses.BusquedaResponse;
+import com.example.trabajofinalcibertec.di.components.DaggerPresentationComponent;
+import com.example.trabajofinalcibertec.di.modules.PresentationModule;
+import com.example.trabajofinalcibertec.presentation.carrito.view.CarritoActivity;
 import com.example.trabajofinalcibertec.presentation.carrito_agregar.view.CarritoAgregarActivity;
+import com.example.trabajofinalcibertec.presentation.carrito_agregar.view.CarritoAgregarAdapter;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.ICarritoBuscarContract;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.presenter.CarritoBuscarPresenter;
 
@@ -23,7 +31,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class CarritoBuscarActivity extends AppCompatActivity implements ICarritoBuscarContract.IView {
+public class CarritoBuscarActivity extends BaseActivity implements ICarritoBuscarContract.IView {
 
     private Button btnCarritoBuscarBuscar;
     private EditText etCarritoBuscarQuery;
@@ -40,16 +48,27 @@ public class CarritoBuscarActivity extends AppCompatActivity implements ICarrito
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_carrito_buscar);
+    }
+
+
+    @Override
+    protected void onViewReady(Bundle savedInstanceState, Intent intent) {
+        super.onViewReady(savedInstanceState, intent);
+
+        // add back arrow to toolbar
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
 
         btnCarritoBuscarBuscar = findViewById(R.id.btnCarritoBuscarBuscar);
         etCarritoBuscarQuery = findViewById(R.id.etCarritoBuscarQuery);
         etCarritoBuscarVacio = findViewById(R.id.etCarritoBuscarVacio);
 
-        //presenter = new CarritoBuscarPresenter();
+        //presenter = new CarritoBuscarPresenter(interactor);
 
-        ((MyApplication) getApplication()).getAppComponent().inject(CarritoBuscarActivity.this);
+        //((MyApplication) getApplication()).getAppComponent().inject(CarritoBuscarActivity.this);
         presenter.attachView(this);
 
         recyclerViewCarritoBuscar = findViewById(R.id.rvListaCarritoBuscar);
@@ -78,12 +97,33 @@ public class CarritoBuscarActivity extends AppCompatActivity implements ICarrito
             public void onClick(View v) {
                 if(!etCarritoBuscarQuery.getText().toString().isEmpty()){
                     String query = etCarritoBuscarQuery.getText().toString();
-                    presenter.buscarProductos(query);
+                    presenter.searchProductos(query);
                 }
             }
         });
+
     }
 
+
+
+    @Override
+    protected void resolveDaggerDependency() {
+        DaggerPresentationComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .presentationModule(new PresentationModule())
+                .build().inject(this);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_carrito_buscar;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) finish();
+        return super.onOptionsItemSelected(item);
+    }
 
 
 
@@ -117,5 +157,20 @@ public class CarritoBuscarActivity extends AppCompatActivity implements ICarrito
         intent.putExtra("nombre", nombre);
         intent.putExtra("descripcion", descripcion);
         startActivity(intent);
+    }
+
+    @Override
+    public void getSearchProductosSuccess(BusquedaResponse busquedaResponse) {
+        if(busquedaResponse.getEstado() == 200){
+            List<Producto> productoList = busquedaResponse.getData();
+            this.carritoBuscarList.clear();
+            this.carritoBuscarList.addAll(productoList);
+            carritoBuscarAdapter.notifyDataSetChanged();
+            recyclerViewCarritoBuscar.setVisibility(View.VISIBLE);
+            etCarritoBuscarVacio.setVisibility(View.GONE);
+        } else {
+            recyclerViewCarritoBuscar.setVisibility(View.GONE);
+            etCarritoBuscarVacio.setVisibility(View.VISIBLE);
+        }
     }
 }

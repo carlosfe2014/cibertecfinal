@@ -8,6 +8,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,8 +28,20 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-
     //dagger
     implementation 'com.google.dagger:dagger:2.16'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
+
+
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.0.1'
+
+    //rxjava y rxandroid y rxretrofit
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.7'
+
 }

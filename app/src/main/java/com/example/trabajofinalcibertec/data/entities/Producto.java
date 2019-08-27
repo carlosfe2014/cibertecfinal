@@ -1,24 +1,39 @@
 package com.example.trabajofinalcibertec.data.entities;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class Producto {
     private int id;
     private String nombre;
     private String descripcion;
     private String imagen;
-    private Double precioPlazaVea;
+
+    @SerializedName("precio_metro")
     private Double precioPlazaMetro;
+
+    @SerializedName("precio_plazavea")
+    private Double precioPlazaVea;
+
+    @SerializedName("precio_tottus")
     private Double precioPlazaTottus;
 
-    public Producto(int id, String nombre, String descripcion, String imagen, Double precioPlazaVea, Double precioPlazaMetro, Double precioPlazaTottus) {
+    @SerializedName("body")
+    private Integer best;
+
+    private List<Comentario> comentarios;
+
+    public Producto(int id, String nombre, String descripcion, String imagen, Double precioPlazaMetro, Double precioPlazaVea, Double precioPlazaTottus, Integer best) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagen = imagen;
-        this.precioPlazaVea = precioPlazaVea;
         this.precioPlazaMetro = precioPlazaMetro;
+        this.precioPlazaVea = precioPlazaVea;
         this.precioPlazaTottus = precioPlazaTottus;
+        this.best = best;
     }
-
 
     public int getId() {
         return id;
@@ -74,5 +89,17 @@ public class Producto {
 
     public void setPrecioPlazaTottus(Double precioPlazaTottus) {
         this.precioPlazaTottus = precioPlazaTottus;
+    }
+
+    public Integer getBest() {
+        return best;
+    }
+
+    public void setBest(Integer best) {
+        this.best = best;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
     }
 }

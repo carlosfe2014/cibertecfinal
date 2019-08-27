@@ -1,6 +1,8 @@
 package com.example.trabajofinalcibertec.presentation.carrito_agregar.presenter;
 
 import com.example.trabajofinalcibertec.data.entities.Comentario;
+import com.example.trabajofinalcibertec.data.entities.responses.ProductoResponse;
+import com.example.trabajofinalcibertec.domain.agregarproducto_interactor.IAgregarProductoInteractor;
 import com.example.trabajofinalcibertec.presentation.carrito_agregar.ICarritoAgregarContract;
 
 import java.util.ArrayList;
@@ -8,12 +10,20 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+
 public class CarritoAgregarPresenter implements ICarritoAgregarContract.IPresenter {
     ICarritoAgregarContract.IView view;
 
+    private final IAgregarProductoInteractor interactor;
+    private Disposable disposable;
+
     @Inject
-    public CarritoAgregarPresenter() {
+    public CarritoAgregarPresenter(IAgregarProductoInteractor interactor) {
+        this.interactor = interactor;
     }
+
 
     @Override
     public void attachView(ICarritoAgregarContract.IView view) {
@@ -28,6 +38,36 @@ public class CarritoAgregarPresenter implements ICarritoAgregarContract.IPresent
     @Override
     public boolean isViewAttached() {
         return view != null;
+    }
+
+    @Override
+    public void getProducto(int id) {
+        interactor.getProducto(id)
+                .subscribe(new Observer<ProductoResponse>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        disposable = d;
+                    }
+
+                    @Override
+                    public void onNext(ProductoResponse productoResponse) {
+                        if(isViewAttached()) {
+                            view.getPostDetailSuccess(productoResponse);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if(isViewAttached()) {
+                            view.showError(e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
