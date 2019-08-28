@@ -1,6 +1,7 @@
 package com.example.trabajofinalcibertec.presentation.detalle.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,6 +15,8 @@ import com.example.trabajofinalcibertec.base.BaseActivity;
 import com.example.trabajofinalcibertec.data.entities.Producto;
 
 
+import com.example.trabajofinalcibertec.di.components.DaggerPresentationComponent;
+import com.example.trabajofinalcibertec.di.modules.PresentationModule;
 import com.example.trabajofinalcibertec.presentation.detalle.IDetalleContract;
 import com.example.trabajofinalcibertec.presentation.detalle.presenter.DetallePresenter;
 
@@ -34,20 +37,20 @@ public class DetalleActivity extends BaseActivity implements IDetalleContract.IV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle);
+    }
+
+    @Override
+    protected void onViewReady(Bundle savedInstanceState, Intent intent) {
+        super.onViewReady(savedInstanceState, intent);
 
 
-        // add back arrow to toolbar
+
+        presenter.attachView(this);
+
         if (getSupportActionBar() != null){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
-
-        //presenter = new DetallePresenter();
-
-        //((MyApplication) getApplication()).getApplicationComponent().inject(DetalleActivity.this);
-        presenter.attachView(this);
 
         recyclerViewDetalle = findViewById(R.id.rvListaDetalle);
 
@@ -56,17 +59,20 @@ public class DetalleActivity extends BaseActivity implements IDetalleContract.IV
         detalleAdapter = new DetalleAdapter(detalleList);
         recyclerViewDetalle.setAdapter(detalleAdapter);
         presenter.getAllProductos();
-
     }
+
 
     @Override
     protected void resolveDaggerDependency() {
-
+        DaggerPresentationComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .presentationModule(new PresentationModule())
+                .build().inject(this);
     }
 
     @Override
     protected int getContentView() {
-        return 0;
+        return R.layout.activity_detalle;
     }
 
 

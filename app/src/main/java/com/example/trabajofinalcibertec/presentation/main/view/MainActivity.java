@@ -119,8 +119,15 @@ public class MainActivity extends BaseActivity implements IMainContract.IView {
 
     @Override
     public void getAllComprasSuccess(List<Compra> compraList) {
+        comprasList.clear();
         this.comprasList.addAll(compraList);
         compraAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.getAllCompras();
     }
 
     @Override

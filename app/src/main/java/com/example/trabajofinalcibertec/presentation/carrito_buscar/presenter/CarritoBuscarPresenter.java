@@ -1,5 +1,7 @@
 package com.example.trabajofinalcibertec.presentation.carrito_buscar.presenter;
 
+import android.text.TextUtils;
+
 import com.example.trabajofinalcibertec.data.entities.Producto;
 import com.example.trabajofinalcibertec.data.entities.responses.BusquedaResponse;
 import com.example.trabajofinalcibertec.data.entities.responses.ProductoResponse;

@@ -12,8 +12,8 @@ import java.util.List;
 @Dao
 public interface CompraDao {
 
-    @Query("select * from compra")
-    List<Compra> getAll();
+    @Query("select * from compra where usuario = :usuario order by id DESC")
+    List<Compra> getAll(String usuario);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insert(Compra compra);

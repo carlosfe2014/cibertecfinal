@@ -2,19 +2,26 @@ package com.example.trabajofinalcibertec.presentation.main.presenter;
 
 import com.example.trabajofinalcibertec.data.entities.Compra;
 import com.example.trabajofinalcibertec.database.AppDatabase;
+import com.example.trabajofinalcibertec.domain.main_interactor.IMainInteractor;
 import com.example.trabajofinalcibertec.presentation.main.IMainContract;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.disposables.Disposable;
+
 public class MainPresenter implements IMainContract.IPresenter {
 
 
+    private final IMainInteractor interactor;
 
 
     @Inject
-    public MainPresenter() {
+    public MainPresenter(IMainInteractor interactor) {
+        this.interactor = interactor;
     }
 
     IMainContract.IView view;
@@ -35,8 +42,12 @@ public class MainPresenter implements IMainContract.IPresenter {
 
     @Override
     public void getAllCompras() {
-        AppDatabase db = AppDatabase.getInstance(view.getContext());
-        List<Compra> comprasList = db.compraDao().getAll();
-        view.getAllComprasSuccess(comprasList);
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        if(currentFirebaseUser != null){
+            List<Compra> comprasList = interactor.searchProductos(currentFirebaseUser.getUid());
+            view.getAllComprasSuccess(comprasList);
+        } else{
+            view.showError("Error: no se detectó un inicio de sesión.");
+        }
     }
 }

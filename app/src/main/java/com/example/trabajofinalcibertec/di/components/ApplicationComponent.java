@@ -2,7 +2,9 @@ package com.example.trabajofinalcibertec.di.components;
 
 import android.content.Context;
 
+import com.example.trabajofinalcibertec.data.repository.ICompraRepository;
 import com.example.trabajofinalcibertec.data.repository.IProductoRepository;
+import com.example.trabajofinalcibertec.database.AppDatabase;
 import com.example.trabajofinalcibertec.di.modules.ApplicationModule;
 import com.example.trabajofinalcibertec.network.JsonPlaceHolderApi;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +22,9 @@ public interface ApplicationComponent {
     Retrofit exposeRetrofit();
     JsonPlaceHolderApi exposeJsonPlaceHolderApi();
     FirebaseAuth exposeFirebaseAuth();
-    IProductoRepository provideProductoRepository();
+    IProductoRepository exposeProductoRepository();
+    ICompraRepository exposeCompraRepository();
+    AppDatabase exposeAppDatabase();
     @Named("ui_thread")
     Scheduler uiThread();
     @Named("executor_thread") Scheduler executorThread();

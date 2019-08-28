@@ -2,8 +2,11 @@ package com.example.trabajofinalcibertec.di.modules;
 
 import android.content.Context;
 
+import com.example.trabajofinalcibertec.data.repository.ICompraRepository;
 import com.example.trabajofinalcibertec.data.repository.IProductoRepository;
+import com.example.trabajofinalcibertec.data.repository.Impl.CompraRepositoryImpl;
 import com.example.trabajofinalcibertec.data.repository.Impl.ProductoRepositoryImpl;
+import com.example.trabajofinalcibertec.database.AppDatabase;
 import com.example.trabajofinalcibertec.network.JsonPlaceHolderApi;
 import com.google.firebase.auth.FirebaseAuth;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -97,9 +100,24 @@ public class ApplicationModule {
         return postRepositoryImpl;
     }
 
+
+    @Provides
+    @Singleton
+    ICompraRepository provideCompraRepository(CompraRepositoryImpl compraRepository){
+        return compraRepository;
+    }
+
+
     @Provides
     @Singleton
     FirebaseAuth provideFirebaseAuth(){
         return FirebaseAuth.getInstance();
     }
+
+    @Provides
+    @Singleton
+    AppDatabase provideAppDatabase(Context context){
+        return AppDatabase.getInstance(context);
+    }
+
 }
