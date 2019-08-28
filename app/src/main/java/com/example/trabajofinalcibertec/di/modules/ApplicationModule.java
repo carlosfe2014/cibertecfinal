@@ -5,6 +5,7 @@ import android.content.Context;
 import com.example.trabajofinalcibertec.data.repository.IProductoRepository;
 import com.example.trabajofinalcibertec.data.repository.Impl.ProductoRepositoryImpl;
 import com.example.trabajofinalcibertec.network.JsonPlaceHolderApi;
+import com.google.firebase.auth.FirebaseAuth;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import javax.inject.Named;
@@ -94,5 +95,11 @@ public class ApplicationModule {
     @Singleton
     IProductoRepository provideProductoRepository(ProductoRepositoryImpl postRepositoryImpl){
         return postRepositoryImpl;
+    }
+
+    @Provides
+    @Singleton
+    FirebaseAuth provideFirebaseAuth(){
+        return FirebaseAuth.getInstance();
     }
 }

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "192125602244",
+    "firebase_url": "https://proyectofinalcibertec.firebaseio.com",
+    "project_id": "proyectofinalcibertec",
+    "storage_bucket": "proyectofinalcibertec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192125602244:android:2227d2e4dd8aed12",
+        "android_client_info": {
+          "package_name": "com.example.trabajofinalcibertec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192125602244-05kfflh24i6aprt381kdki7qnbgga1oq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2IdFrC1aBlkK0w_b7J9TU9VUYDnZ2_ic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192125602244-05kfflh24i6aprt381kdki7qnbgga1oq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

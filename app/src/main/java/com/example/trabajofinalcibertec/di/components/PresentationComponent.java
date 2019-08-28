@@ -6,7 +6,9 @@ import com.example.trabajofinalcibertec.presentation.carrito.view.CarritoActivit
 import com.example.trabajofinalcibertec.presentation.carrito_agregar.view.CarritoAgregarActivity;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.view.CarritoBuscarActivity;
 import com.example.trabajofinalcibertec.presentation.detalle.view.DetalleActivity;
+import com.example.trabajofinalcibertec.presentation.login.view.LoginActivity;
 import com.example.trabajofinalcibertec.presentation.main.view.MainActivity;
+import com.example.trabajofinalcibertec.presentation.registro.view.RegistroActivity;
 
 import dagger.Component;
 
@@ -18,4 +20,6 @@ public interface PresentationComponent {
     void inject(CarritoAgregarActivity carritoAgregarActivity);
     void inject(CarritoBuscarActivity carritoBuscarActivity);
     void inject(DetalleActivity detalleActivity);
+    void inject(LoginActivity loginActivity);
+    void inject(RegistroActivity registroActivity);
 }

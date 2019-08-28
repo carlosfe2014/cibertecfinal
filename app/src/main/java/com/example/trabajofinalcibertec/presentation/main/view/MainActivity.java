@@ -1,31 +1,37 @@
 package com.example.trabajofinalcibertec.presentation.main.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.trabajofinalcibertec.MyApplication;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.trabajofinalcibertec.R;
+import com.example.trabajofinalcibertec.base.BaseActivity;
 import com.example.trabajofinalcibertec.data.entities.Compra;
+import com.example.trabajofinalcibertec.di.components.DaggerPresentationComponent;
+import com.example.trabajofinalcibertec.di.modules.PresentationModule;
 import com.example.trabajofinalcibertec.presentation.carrito.view.CarritoActivity;
+import com.example.trabajofinalcibertec.presentation.carrito_buscar.view.CarritoBuscarAdapter;
+import com.example.trabajofinalcibertec.presentation.carrito_buscar.view.CarritoBuscarClickListener;
 import com.example.trabajofinalcibertec.presentation.main.IMainContract;
 import com.example.trabajofinalcibertec.presentation.main.presenter.MainPresenter;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity implements IMainContract.IView {
+public class MainActivity extends BaseActivity implements IMainContract.IView {
 
     private RecyclerView recyclerViewCompras;
     private CompraAdapter compraAdapter;
@@ -38,7 +44,17 @@ public class MainActivity extends AppCompatActivity implements IMainContract.IVi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+    }
+
+
+
+    @Override
+    protected void onViewReady(Bundle savedInstanceState, Intent intent) {
+        super.onViewReady(savedInstanceState, intent);
+
+        presenter.attachView(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -57,10 +73,6 @@ public class MainActivity extends AppCompatActivity implements IMainContract.IVi
             }
         });
 
-        presenter = new MainPresenter();
-        //((MyApplication) getApplication()).getAppComponent().inject(MainActivity.this);
-        presenter.attachView(this);
-
         tvListaComprasVacia = findViewById(R.id.tvListaComprasVacia);
         tvListaComprasVacia.setVisibility(View.GONE);
         recyclerViewCompras = findViewById(R.id.rvListaCompras);
@@ -69,6 +81,21 @@ public class MainActivity extends AppCompatActivity implements IMainContract.IVi
         compraAdapter = new CompraAdapter(comprasList);
         recyclerViewCompras.setAdapter(compraAdapter);
         presenter.getAllCompras();
+
+    }
+
+
+    @Override
+    protected void resolveDaggerDependency() {
+        DaggerPresentationComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .presentationModule(new PresentationModule())
+                .build().inject(this);
+    }
+
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_main;
     }
 
     @Override
@@ -91,8 +118,13 @@ public class MainActivity extends AppCompatActivity implements IMainContract.IVi
     }
 
     @Override
-    public void getAllComprassSuccess(List<Compra> compraList) {
+    public void getAllComprasSuccess(List<Compra> compraList) {
         this.comprasList.addAll(compraList);
         compraAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public Context getContext(){
+        return getApplicationContext();
     }
 }

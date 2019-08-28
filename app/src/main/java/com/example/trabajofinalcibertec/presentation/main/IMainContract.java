@@ -1,5 +1,7 @@
 package com.example.trabajofinalcibertec.presentation.main;
 
+import android.content.Context;
+
 import com.example.trabajofinalcibertec.data.entities.Compra;
 
 import java.util.List;
@@ -7,7 +9,8 @@ import java.util.List;
 public interface IMainContract {
     interface IView{
         void showError(String errorMsg);
-        void getAllComprassSuccess(List<Compra> compraList);
+        void getAllComprasSuccess(List<Compra> compraList);
+        Context getContext();
         //void getAllPostSuccess(List<Com> postList);
         //void gotToDetailPost(int postId);
     }

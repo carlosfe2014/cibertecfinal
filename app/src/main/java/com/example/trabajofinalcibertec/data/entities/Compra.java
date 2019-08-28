@@ -1,16 +1,32 @@
 package com.example.trabajofinalcibertec.data.entities;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity
 public class Compra {
 
+    @NonNull
+    @PrimaryKey(autoGenerate = true)
     private int id;
-    private String titulo;
-    private String descripcion;
-    private List<Producto> productos;
 
-    public Compra(int id, String titulo, String descripcion) {
-        this.id = id;
+    @NonNull
+    @ColumnInfo(name = "usuario")
+    private String usuario;
+
+    @NonNull
+    @ColumnInfo(name = "titulo")
+    private String titulo;
+
+    @ColumnInfo(name = "descripcion")
+    private String descripcion;
+
+    public Compra(@NonNull String usuario, @NonNull String titulo, String descripcion) {
+        this.usuario = usuario;
         this.titulo = titulo;
         this.descripcion = descripcion;
     }
@@ -23,11 +39,21 @@ public class Compra {
         this.id = id;
     }
 
+    @NonNull
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(@NonNull String usuario) {
+        this.usuario = usuario;
+    }
+
+    @NonNull
     public String getTitulo() {
         return titulo;
     }
 
-    public void setTitulo(String titulo) {
+    public void setTitulo(@NonNull String titulo) {
         this.titulo = titulo;
     }
 
@@ -37,13 +63,5 @@ public class Compra {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public List<Producto> getProductos() {
-        return productos;
-    }
-
-    public void setProductos(List<Producto> productos) {
-        this.productos = productos;
     }
 }

@@ -1,18 +1,19 @@
 package com.example.trabajofinalcibertec.presentation.detalle.view;
 
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.trabajofinalcibertec.MyApplication;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+
 import com.example.trabajofinalcibertec.R;
 import com.example.trabajofinalcibertec.base.BaseActivity;
 import com.example.trabajofinalcibertec.data.entities.Producto;
 
-import com.example.trabajofinalcibertec.di.modules.PresentationModule;
+
 import com.example.trabajofinalcibertec.presentation.detalle.IDetalleContract;
 import com.example.trabajofinalcibertec.presentation.detalle.presenter.DetallePresenter;
 

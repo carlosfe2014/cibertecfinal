@@ -3,10 +3,13 @@ package com.example.trabajofinalcibertec.presentation.login;
 public interface ILoginContract {
     interface IView{
         void showError(String errorMsg);
+        void goToHome();
     }
     interface IPresenter{
         void attachView(IView view);
         void detachView();
         boolean isViewAttached();
+        void checkUserLogged();
+        void login(String username, String password);
     }
 }

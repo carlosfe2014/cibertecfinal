@@ -28,21 +28,9 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="#1139C2"
-                android:text="Nombre:"/>
+                android:text="E-mail:"/>
             <EditText
-                android:id="@+id/etRegistroNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Ingrese su nombre"/>
-            <TextView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingLeft="5dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="#1139C2"
-                android:text="Usuario"/>
-            <EditText
-                android:id="@+id/etRegistroUsuario"
+                android:id="@+id/etRegistroEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Ingrese su usuario"/>
@@ -53,13 +41,13 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="#1139C2"
-                android:text="Contraseña"/>
+                android:text="Contraseña:"/>
             <EditText
                 android:id="@+id/etRegistroPassword"
                 android:inputType="textWebPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ingrese su contraseña"/>
+                android:hint="Ingrese su contraseña..."/>
             <TextView
                 android:paddingLeft="5dp"
                 android:layout_width="match_parent"
@@ -67,13 +55,13 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="#1139C2"
-                android:text="Confirmar contraseña"/>
+                android:text="Confirmar contraseña: "/>
             <EditText
                 android:id="@+id/etRegistroPasswordConfirmacion"
                 android:inputType="textWebPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Confirme su contraseña"/>
+                android:hint="Confirme su contraseña..."/>
             <LinearLayout
                 android:gravity="center"
                 android:layout_width="match_parent"

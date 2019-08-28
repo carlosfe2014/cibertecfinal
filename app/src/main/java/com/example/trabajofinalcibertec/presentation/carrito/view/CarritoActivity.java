@@ -2,23 +2,29 @@ package com.example.trabajofinalcibertec.presentation.carrito.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.trabajofinalcibertec.MyApplication;
 import com.example.trabajofinalcibertec.R;
+import com.example.trabajofinalcibertec.data.entities.Compra;
 import com.example.trabajofinalcibertec.data.entities.Producto;
+import com.example.trabajofinalcibertec.database.AppDatabase;
 import com.example.trabajofinalcibertec.presentation.carrito.ICarritoContract;
 import com.example.trabajofinalcibertec.presentation.carrito.presenter.CarritoPresenter;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.view.CarritoBuscarActivity;
 import com.example.trabajofinalcibertec.presentation.detalle.view.DetalleActivity;
+import com.example.trabajofinalcibertec.presentation.main.view.MainActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +60,17 @@ public class CarritoActivity extends AppCompatActivity implements ICarritoContra
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(CarritoActivity.this, DetalleActivity.class);
-                startActivity(intent);
+
+
+                Compra compra = new Compra("carlosfe", "Compra prueba", "Compra descripcion");
+
+                long insertID = AppDatabase.getInstance(getApplicationContext()).compraDao().insert(compra);
+
+                Toast.makeText(CarritoActivity.this, "" + insertID, Toast.LENGTH_SHORT).show();
+
+
+                //Intent intent = new Intent(CarritoActivity.this, MainActivity.class);
+                //startActivity(intent);
             }
         });
 
