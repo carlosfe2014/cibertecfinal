@@ -15,6 +15,9 @@ public interface CompraDao {
     @Query("select * from compra where usuario = :usuario order by id DESC")
     List<Compra> getAll(String usuario);
 
+    @Query("select * from compra where id = :id")
+    Compra getCompra(long id);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insert(Compra compra);
 }

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.trabajofinalcibertec.R;
 import com.example.trabajofinalcibertec.data.entities.Producto;
 
@@ -41,6 +42,7 @@ public class CarritoBuscarAdapter extends RecyclerView.Adapter<CarritoBuscarAdap
         Producto producto = productoList.get(position);
         holder.tvCarritoBuscarNombre.setText(producto.getNombre());
         holder.tvCarritoBuscarDescripcion.setText(producto.getDescripcion());
+        Glide.with(holder.itemView).load(producto.getImagen()).into(holder.ivCarritoBuscarImagen);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class CarritoBuscarAdapter extends RecyclerView.Adapter<CarritoBuscarAdap
 
         private TextView tvCarritoBuscarNombre;
         private TextView tvCarritoBuscarDescripcion;
-        private ImageView btnCarritoBuscarAgregar;
+        private ImageView ivCarritoBuscarImagen;
 
         public CarritoBuscarViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,7 +68,7 @@ public class CarritoBuscarAdapter extends RecyclerView.Adapter<CarritoBuscarAdap
             });
             tvCarritoBuscarNombre = itemView.findViewById(R.id.tvCarritoBuscarNombre);
             tvCarritoBuscarDescripcion = itemView.findViewById(R.id.tvCarritoBuscarDescripcion);
-            btnCarritoBuscarAgregar = itemView.findViewById(R.id.btnCarritoBuscarAgregar);
+            ivCarritoBuscarImagen = itemView.findViewById(R.id.ivCarritoBuscarImagen);
         }
     }
 }

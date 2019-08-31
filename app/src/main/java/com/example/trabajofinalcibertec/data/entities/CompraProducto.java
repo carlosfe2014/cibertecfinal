@@ -5,12 +5,19 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
+
+@SuppressWarnings("serial")
 @Entity
-public class CompraProducto {
+public class CompraProducto implements Serializable {
     @NonNull
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
 
+    @NonNull
+    @ColumnInfo(name = "carrito")
+    private long carrito;
 
     @NonNull
     @ColumnInfo(name = "nombre")
@@ -43,12 +50,33 @@ public class CompraProducto {
     private Integer cantidad;
 
 
+    public CompraProducto(@NonNull String nombre, String descripcion, String imagen, @NonNull Double precioMetro, @NonNull Double precioPlazaVea, @NonNull Double precioPlazaTottus, @NonNull Integer best, @NonNull Integer cantidad) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.precioMetro = precioMetro;
+        this.precioPlazaVea = precioPlazaVea;
+        this.precioPlazaTottus = precioPlazaTottus;
+        this.best = best;
+        this.cantidad = cantidad;
+    }
+
+
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    @NonNull
+    public long getCarrito() {
+        return carrito;
+    }
+
+    public void setCarrito(@NonNull long carrito) {
+        this.carrito = carrito;
     }
 
     @NonNull

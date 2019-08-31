@@ -9,6 +9,8 @@ import com.example.trabajofinalcibertec.domain.buscarproducto_interactor.BuscarP
 import com.example.trabajofinalcibertec.domain.buscarproducto_interactor.IBuscarProductoInteractor;
 import com.example.trabajofinalcibertec.domain.carrito_interactor.CarritoInteractorImpl;
 import com.example.trabajofinalcibertec.domain.carrito_interactor.ICarritoInteractor;
+import com.example.trabajofinalcibertec.domain.detalle_interactor.DetalleInteractorImpl;
+import com.example.trabajofinalcibertec.domain.detalle_interactor.IDetalleInteractor;
 import com.example.trabajofinalcibertec.domain.main_interactor.IMainInteractor;
 import com.example.trabajofinalcibertec.domain.main_interactor.MainInteractorImpl;
 
@@ -50,6 +52,12 @@ public class PresentationModule {
     @Provides
     ICarritoInteractor provideCarritoInteractor(ICompraRepository repository){
         return new CarritoInteractorImpl(repository);
+    }
+
+    @PerActivity
+    @Provides
+    IDetalleInteractor provideDetalleInteractor(ICompraRepository repository){
+        return new DetalleInteractorImpl(repository);
     }
 
 }

@@ -9,8 +9,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.trabajofinalcibertec.R;
 import com.example.trabajofinalcibertec.data.entities.Compra;
+import com.example.trabajofinalcibertec.data.entities.CompraProducto;
 
 import java.util.List;
 
@@ -18,16 +20,17 @@ import java.util.List;
 
 public class CompraAdapter extends RecyclerView.Adapter<CompraAdapter.CompraViewHolder> {
 
-    //private PostClickListener clickListener;
+
+    private MainClickListener clickListener;
     private List<Compra> compraList;
 
     public CompraAdapter(List<Compra> compraList) {
         this.compraList = compraList;
     }
 
-    //public void setOnItemClickListener(PostClickListener clickListener){
-      //  this.clickListener = clickListener;
-    //}
+    public void setOnItemClickListener(MainClickListener clickListener){
+        this.clickListener = clickListener;
+    }
 
     @NonNull
     @Override
@@ -59,9 +62,9 @@ public class CompraAdapter extends RecyclerView.Adapter<CompraAdapter.CompraView
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //if(clickListener != null) {
-                    //    clickListener.onClick(getAdapterPosition());
-                    //}
+                    if(clickListener != null) {
+                        clickListener.onClick(getAdapterPosition());
+                    }
                 }
             });
             cvComprasTitulo = itemView.findViewById(R.id.cvComprasTitulo);

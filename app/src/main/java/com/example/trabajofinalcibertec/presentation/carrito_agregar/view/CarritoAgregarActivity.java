@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,17 +13,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.trabajofinalcibertec.MyApplication;
 import com.example.trabajofinalcibertec.R;
 import com.example.trabajofinalcibertec.base.BaseActivity;
 import com.example.trabajofinalcibertec.data.entities.Comentario;
+import com.example.trabajofinalcibertec.data.entities.CompraProducto;
 import com.example.trabajofinalcibertec.data.entities.Producto;
 import com.example.trabajofinalcibertec.data.entities.responses.ProductoResponse;
 import com.example.trabajofinalcibertec.di.components.DaggerPresentationComponent;
 import com.example.trabajofinalcibertec.di.modules.PresentationModule;
-import com.example.trabajofinalcibertec.presentation.carrito.view.CarritoActivity;
 import com.example.trabajofinalcibertec.presentation.carrito_agregar.ICarritoAgregarContract;
 import com.example.trabajofinalcibertec.presentation.carrito_agregar.presenter.CarritoAgregarPresenter;
+import com.example.trabajofinalcibertec.utils.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -36,8 +37,11 @@ public class CarritoAgregarActivity extends BaseActivity implements ICarritoAgre
     private TextView tvCarritoAgregarNombre;
     private TextView tvCarritoAgregarDescripcion;
     private TextView tvListaCarritoAgregarVacio;
+    private EditText etCarritoAgregarCantidad;
 
     private Button btnCarritoAgregarAgregarComentario;
+    private Producto producto;
+    private CompraProducto compraProducto;
 
     private RecyclerView recyclerViewCarritoAgregar;
     private CarritoAgregarAdapter carritoAgregarAdapter;
@@ -71,13 +75,6 @@ public class CarritoAgregarActivity extends BaseActivity implements ICarritoAgre
         }
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(CarritoAgregarActivity.this, CarritoActivity.class);
-                startActivity(intent);
-            }
-        });
 
         int id = getIntent().getIntExtra("id", -1);
 
@@ -92,6 +89,7 @@ public class CarritoAgregarActivity extends BaseActivity implements ICarritoAgre
         tvCarritoAgregarDescripcion = findViewById(R.id.tvCarritoAgregarDescripcion);
         tvListaCarritoAgregarVacio = findViewById(R.id.tvListaCarritoAgregarVacio);
         recyclerViewCarritoAgregar = findViewById(R.id.rvListaCarritoAgregar);
+        etCarritoAgregarCantidad = findViewById(R.id.etCarritoAgregarCantidad);
 
 
         recyclerViewCarritoAgregar.setVisibility(View.GONE);
@@ -99,6 +97,21 @@ public class CarritoAgregarActivity extends BaseActivity implements ICarritoAgre
 
 
         btnCarritoAgregarAgregarComentario = findViewById(R.id.btnCarritoAgregarAgregarComentario);
+
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String cantidad = etCarritoAgregarCantidad.getText().toString();
+                if(Utils.isStringInteger(cantidad) && Integer.valueOf(cantidad) > 0){
+                    compraProducto = new CompraProducto(producto.getNombre(), producto.getDescripcion(), producto.getImagen(), producto.getPrecioMetro(), producto.getPrecioPlazaVea(), producto.getPrecioTottus(), producto.getBest(), Integer.valueOf(cantidad));
+                    finish();
+                } else {
+                    showError("Ingrese una cantidad válida para el producto.");
+                }
+            }
+        });
 
 
         btnCarritoAgregarAgregarComentario.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +128,7 @@ public class CarritoAgregarActivity extends BaseActivity implements ICarritoAgre
         carritoAgregarAdapter = new CarritoAgregarAdapter(carritoAgregarList);
         recyclerViewCarritoAgregar.setAdapter(carritoAgregarAdapter);
         presenter.getComentarios(id);
-        presenter.getProducto(1);
+        presenter.getProducto(id);
     }
 
 
@@ -148,7 +161,7 @@ public class CarritoAgregarActivity extends BaseActivity implements ICarritoAgre
     public void getPostDetailSuccess(ProductoResponse productoResponse) {
 
         if(productoResponse.getEstado() == 200){
-            Producto producto = productoResponse.getData();
+            producto = productoResponse.getData();
             tvCarritoAgregarNombre.setText(producto.getNombre());
             tvCarritoAgregarDescripcion.setText(producto.getDescripcion());
             if(producto.getComentarios() != null){
@@ -165,4 +178,18 @@ public class CarritoAgregarActivity extends BaseActivity implements ICarritoAgre
             Toast.makeText(this, "El producto seleccionado no existe...", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    public void finish() {
+
+        if(producto != null){
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("producto", compraProducto);
+            setResult(RESULT_OK, returnIntent); //By not passing the intent in the result, the calling activity will get null data.
+            super.finish();
+        } else {
+            showError("Ingrese una cantidad válida para el producto.");
+        }
+    }
+
 }

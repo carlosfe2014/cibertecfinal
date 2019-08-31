@@ -11,27 +11,27 @@ public class Producto {
     private String imagen;
 
     @SerializedName("precio_metro")
-    private Double precioPlazaMetro;
+    private Double precioMetro;
 
     @SerializedName("precio_plazavea")
     private Double precioPlazaVea;
 
     @SerializedName("precio_tottus")
-    private Double precioPlazaTottus;
+    private Double precioTottus;
 
-    @SerializedName("body")
+    @SerializedName("best")
     private Integer best;
 
     private List<Comentario> comentarios;
 
-    public Producto(int id, String nombre, String descripcion, String imagen, Double precioPlazaMetro, Double precioPlazaVea, Double precioPlazaTottus, Integer best) {
+    public Producto(int id, String nombre, String descripcion, String imagen, Double precioMetro, Double precioPlazaVea, Double precioTottus, Integer best) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagen = imagen;
-        this.precioPlazaMetro = precioPlazaMetro;
+        this.precioMetro = precioMetro;
         this.precioPlazaVea = precioPlazaVea;
-        this.precioPlazaTottus = precioPlazaTottus;
+        this.precioTottus = precioTottus;
         this.best = best;
     }
 
@@ -75,20 +75,20 @@ public class Producto {
         this.precioPlazaVea = precioPlazaVea;
     }
 
-    public Double getPrecioPlazaMetro() {
-        return precioPlazaMetro;
+    public Double getPrecioMetro() {
+        return precioMetro;
     }
 
-    public void setPrecioPlazaMetro(Double precioPlazaMetro) {
-        this.precioPlazaMetro = precioPlazaMetro;
+    public void setPrecioMetro(Double precioMetro) {
+        this.precioMetro = precioMetro;
     }
 
-    public Double getPrecioPlazaTottus() {
-        return precioPlazaTottus;
+    public Double getPrecioTottus() {
+        return precioTottus;
     }
 
-    public void setPrecioPlazaTottus(Double precioPlazaTottus) {
-        this.precioPlazaTottus = precioPlazaTottus;
+    public void setPrecioTottus(Double precioTottus) {
+        this.precioTottus = precioTottus;
     }
 
     public Integer getBest() {

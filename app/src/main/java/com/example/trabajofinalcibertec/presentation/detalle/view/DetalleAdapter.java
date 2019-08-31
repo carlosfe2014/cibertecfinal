@@ -4,12 +4,15 @@ package com.example.trabajofinalcibertec.presentation.detalle.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.trabajofinalcibertec.R;
+import com.example.trabajofinalcibertec.data.entities.CompraProducto;
 import com.example.trabajofinalcibertec.data.entities.Producto;
 
 import java.util.List;
@@ -17,9 +20,9 @@ import java.util.List;
 public class DetalleAdapter extends RecyclerView.Adapter<DetalleAdapter.DetalleViewHolder> {
 
     //private PostClickListener clickListener;
-    private List<Producto> productoList;
+    private List<CompraProducto> productoList;
 
-    public DetalleAdapter(List<Producto> productoList) {
+    public DetalleAdapter(List<CompraProducto> productoList) {
         this.productoList = productoList;
     }
 
@@ -37,9 +40,10 @@ public class DetalleAdapter extends RecyclerView.Adapter<DetalleAdapter.DetalleV
 
     @Override
     public void onBindViewHolder(@NonNull DetalleViewHolder holder, int position) {
-        Producto producto = productoList.get(position);
+        CompraProducto producto = productoList.get(position);
         holder.cvDetalleNombre.setText(producto.getNombre());
         holder.cvDetalleCantidad.setText(producto.getDescripcion());
+        Glide.with(holder.itemView).load(producto.getImagen()).into(holder.cvDetalleImagen);
     }
 
     @Override
@@ -51,6 +55,7 @@ public class DetalleAdapter extends RecyclerView.Adapter<DetalleAdapter.DetalleV
 
         private TextView cvDetalleNombre;
         private TextView cvDetalleCantidad;
+        private ImageView cvDetalleImagen;
 
         public DetalleViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -64,6 +69,7 @@ public class DetalleAdapter extends RecyclerView.Adapter<DetalleAdapter.DetalleV
             });
             cvDetalleNombre = itemView.findViewById(R.id.cvDetalleNombre);
             cvDetalleCantidad = itemView.findViewById(R.id.cvDetalleCantidad);
+            cvDetalleImagen = itemView.findViewById(R.id.cvDetalleImagen);
         }
     }
 }

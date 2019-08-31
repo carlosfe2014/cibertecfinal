@@ -14,13 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trabajofinalcibertec.R;
 import com.example.trabajofinalcibertec.base.BaseActivity;
+import com.example.trabajofinalcibertec.data.entities.CompraProducto;
 import com.example.trabajofinalcibertec.data.entities.Producto;
 import com.example.trabajofinalcibertec.data.entities.responses.BusquedaResponse;
 import com.example.trabajofinalcibertec.di.components.DaggerPresentationComponent;
 import com.example.trabajofinalcibertec.di.modules.PresentationModule;
-import com.example.trabajofinalcibertec.presentation.carrito.view.CarritoActivity;
 import com.example.trabajofinalcibertec.presentation.carrito_agregar.view.CarritoAgregarActivity;
-import com.example.trabajofinalcibertec.presentation.carrito_agregar.view.CarritoAgregarAdapter;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.ICarritoBuscarContract;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.presenter.CarritoBuscarPresenter;
 
@@ -31,6 +30,8 @@ import javax.inject.Inject;
 
 public class CarritoBuscarActivity extends BaseActivity implements ICarritoBuscarContract.IView {
 
+    private final int REQUEST_CODE = 2000;
+    private CompraProducto producto;
     private Button btnCarritoBuscarBuscar;
     private EditText etCarritoBuscarQuery;
     private TextView etCarritoBuscarVacio;
@@ -148,13 +149,9 @@ public class CarritoBuscarActivity extends BaseActivity implements ICarritoBusca
     @Override
     public void gotToProductoAgregar(int position) {
         int id = carritoBuscarList.get(position).getId();
-        String nombre = carritoBuscarList.get(position).getNombre();
-        String descripcion = carritoBuscarList.get(position).getDescripcion();
-        Intent intent = new Intent(this, CarritoAgregarActivity.class);
+        Intent intent = new Intent(CarritoBuscarActivity.this, CarritoAgregarActivity.class);
         intent.putExtra("id", id);
-        intent.putExtra("nombre", nombre);
-        intent.putExtra("descripcion", descripcion);
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
@@ -171,4 +168,24 @@ public class CarritoBuscarActivity extends BaseActivity implements ICarritoBusca
             etCarritoBuscarVacio.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    public void finish() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("producto", producto);
+        setResult(RESULT_OK, returnIntent); //By not passing the intent in the result, the calling activity will get null data.
+        super.finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            producto = (CompraProducto) data.getSerializableExtra("producto");
+            if(producto != null){
+                finish();
+            }
+        }
+    }
+
 }

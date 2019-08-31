@@ -4,6 +4,7 @@ package com.example.trabajofinalcibertec.presentation.detalle.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trabajofinalcibertec.R;
 import com.example.trabajofinalcibertec.base.BaseActivity;
+import com.example.trabajofinalcibertec.data.entities.Compra;
+import com.example.trabajofinalcibertec.data.entities.CompraProducto;
 import com.example.trabajofinalcibertec.data.entities.Producto;
 
 
@@ -29,7 +32,12 @@ public class DetalleActivity extends BaseActivity implements IDetalleContract.IV
 
     private RecyclerView recyclerViewDetalle;
     private DetalleAdapter detalleAdapter;
-    private List<Producto> detalleList;
+    private List<CompraProducto> detalleList;
+    private TextView tvDetalleTitulo;
+    private TextView tvDetalleDescricion;
+    private TextView tvDetallePrecioPlazaVea;
+    private TextView tvDetallePrecioTottus;
+    private TextView tvDetallePrecioMetro;
 
     @Inject
     DetallePresenter presenter;
@@ -44,6 +52,13 @@ public class DetalleActivity extends BaseActivity implements IDetalleContract.IV
         super.onViewReady(savedInstanceState, intent);
 
 
+        long id = getIntent().getLongExtra("id", -1);
+
+
+        if(id == -1){
+            showError("No se encontró el ID del producto");
+            finish();
+        }
 
         presenter.attachView(this);
 
@@ -52,13 +67,21 @@ public class DetalleActivity extends BaseActivity implements IDetalleContract.IV
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        tvDetalleTitulo = findViewById(R.id.tvDetalleTitulo);
+        tvDetalleDescricion = findViewById(R.id.tvDetalleDescricion);
+        tvDetallePrecioPlazaVea = findViewById(R.id.tvDetallePrecioPlazaVea);
+        tvDetallePrecioTottus = findViewById(R.id.tvDetallePrecioTottus);
+        tvDetallePrecioMetro = findViewById(R.id.tvDetallePrecioMetro);
+
+
         recyclerViewDetalle = findViewById(R.id.rvListaDetalle);
 
         recyclerViewDetalle.setLayoutManager(new LinearLayoutManager(this));
         detalleList = new ArrayList<>();
         detalleAdapter = new DetalleAdapter(detalleList);
         recyclerViewDetalle.setAdapter(detalleAdapter);
-        presenter.getAllProductos();
+        presenter.getCarritoDetalle(id);
+        presenter.getCarritoProductos(id);
     }
 
 
@@ -88,8 +111,14 @@ public class DetalleActivity extends BaseActivity implements IDetalleContract.IV
     }
 
     @Override
-    public void getAllProductosSuccess(List<Producto> productoList) {
-        this.detalleList.addAll(productoList);
+    public void getAllCarritoProductos(List<CompraProducto> compraProductoList) {
+        this.detalleList.addAll(compraProductoList);
         detalleAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getCarritoDetalle(Compra compra) {
+        tvDetalleTitulo.setText(compra.getTitulo());
+        tvDetalleDescricion.setText(compra.getDescripcion());
     }
 }

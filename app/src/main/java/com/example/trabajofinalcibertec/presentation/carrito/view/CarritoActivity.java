@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.trabajofinalcibertec.R;
 import com.example.trabajofinalcibertec.base.BaseActivity;
-import com.example.trabajofinalcibertec.data.entities.Producto;
+import com.example.trabajofinalcibertec.data.entities.CompraProducto;
 import com.example.trabajofinalcibertec.di.components.DaggerPresentationComponent;
 import com.example.trabajofinalcibertec.di.modules.PresentationModule;
 import com.example.trabajofinalcibertec.presentation.carrito.ICarritoContract;
@@ -35,9 +35,10 @@ public class CarritoActivity extends BaseActivity implements ICarritoContract.IV
     private Button btnCarritoAgregar;
     private RecyclerView recyclerViewCarrito;
     private CarritoAdapter carritoAdapter;
-    private List<Producto> carritoList;
+    private List<CompraProducto> carritoList;
     private EditText etCarritoTitulo;
     private EditText etCarritoDescripcion;
+    private final int REQUEST_CODE = 1111;
 
     @Inject
     CarritoPresenter presenter;
@@ -74,21 +75,16 @@ public class CarritoActivity extends BaseActivity implements ICarritoContract.IV
         recyclerViewCarrito.setLayoutManager(new LinearLayoutManager(this));
         carritoList = new ArrayList<>();
         carritoAdapter = new CarritoAdapter(carritoList);
-        recyclerViewCarrito.setAdapter(carritoAdapter);
-        presenter.getAllProductos();
 
+
+        recyclerViewCarrito.setAdapter(carritoAdapter);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //String titulo = etCarritoTitulo.getText().toString();
-                //String descripcion = etCarritoDescripcion.getText().toString();
-                //presenter.guardarCarrito(titulo, descripcion);
-
-
-                Intent intent = new Intent(CarritoActivity.this, DetalleActivity.class);
-                startActivity(intent);
-
+                String titulo = etCarritoTitulo.getText().toString();
+                String descripcion = etCarritoDescripcion.getText().toString();
+                presenter.guardarCarrito(titulo, descripcion, carritoList);
             }
         });
 
@@ -96,7 +92,7 @@ public class CarritoActivity extends BaseActivity implements ICarritoContract.IV
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CarritoActivity.this, CarritoBuscarActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
@@ -129,11 +125,6 @@ public class CarritoActivity extends BaseActivity implements ICarritoContract.IV
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void getAllProductosSuccess(List<Producto> productoList) {
-        this.carritoList.addAll(productoList);
-        carritoAdapter.notifyDataSetChanged();
-    }
 
     @Override
     public Context getContext(){
@@ -141,7 +132,25 @@ public class CarritoActivity extends BaseActivity implements ICarritoContract.IV
     }
 
     @Override
-    public void closeActivity() {
-        finish();
+    public void closeActivity(long respuesta) {
+        Intent intent = new Intent(CarritoActivity.this, DetalleActivity.class);
+        intent.putExtra("id", respuesta);
+        startActivity(intent);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            CompraProducto producto = (CompraProducto)data.getSerializableExtra("producto");
+            if(producto != null){
+                this.carritoList.add(producto);
+                carritoAdapter.notifyDataSetChanged();
+            }
+            // deal with the item yourself
+
+        }
+    }
+
+
 }

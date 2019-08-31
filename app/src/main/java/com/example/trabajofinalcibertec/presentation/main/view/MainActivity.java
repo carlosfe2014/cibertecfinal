@@ -22,6 +22,7 @@ import com.example.trabajofinalcibertec.di.modules.PresentationModule;
 import com.example.trabajofinalcibertec.presentation.carrito.view.CarritoActivity;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.view.CarritoBuscarAdapter;
 import com.example.trabajofinalcibertec.presentation.carrito_buscar.view.CarritoBuscarClickListener;
+import com.example.trabajofinalcibertec.presentation.detalle.view.DetalleActivity;
 import com.example.trabajofinalcibertec.presentation.main.IMainContract;
 import com.example.trabajofinalcibertec.presentation.main.presenter.MainPresenter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -79,11 +80,24 @@ public class MainActivity extends BaseActivity implements IMainContract.IView {
         recyclerViewCompras.setLayoutManager(new LinearLayoutManager(this));
         comprasList = new ArrayList<>();
         compraAdapter = new CompraAdapter(comprasList);
+
+        compraAdapter.setOnItemClickListener(new MainClickListener() {
+            @Override
+            public void onClick(int position) {
+                goToCompra(position);
+            }
+        });
+
         recyclerViewCompras.setAdapter(compraAdapter);
         presenter.getAllCompras();
 
     }
-
+    private void goToCompra(int position) {
+        long id = comprasList.get(position).getId();
+        Intent intent = new Intent(MainActivity.this, DetalleActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
+    }
 
     @Override
     protected void resolveDaggerDependency() {

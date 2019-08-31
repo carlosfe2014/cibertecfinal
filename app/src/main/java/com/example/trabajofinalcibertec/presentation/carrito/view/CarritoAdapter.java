@@ -4,28 +4,29 @@ package com.example.trabajofinalcibertec.presentation.carrito.view;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.trabajofinalcibertec.R;
-import com.example.trabajofinalcibertec.data.entities.Producto;
+import com.example.trabajofinalcibertec.data.entities.CompraProducto;
 
 import java.util.List;
 
 public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoViewHolder> {
 
-    //private PostClickListener clickListener;
-    private List<Producto> productoList;
 
-    public CarritoAdapter(List<Producto> productoList) {
+    private List<CompraProducto> productoList;
+
+    public CarritoAdapter(List<CompraProducto> productoList) {
         this.productoList = productoList;
     }
 
-    //public void setOnItemClickListener(PostClickListener clickListener){
-    //  this.clickListener = clickListener;
-    //}
+
 
     @NonNull
     @Override
@@ -37,9 +38,14 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
 
     @Override
     public void onBindViewHolder(@NonNull CarritoViewHolder holder, int position) {
-        Producto producto = productoList.get(position);
+        CompraProducto producto = productoList.get(position);
         holder.cvCarritoNombre.setText(producto.getNombre());
         holder.cvCarritoCantidad.setText(producto.getDescripcion());
+
+
+        Glide.with(holder.itemView).load(producto.getImagen()).into(holder.cvCarritoImagen);
+
+
     }
 
     @Override
@@ -51,19 +57,13 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.CarritoV
 
         private TextView cvCarritoNombre;
         private TextView cvCarritoCantidad;
+        private ImageView cvCarritoImagen;
 
         public CarritoViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //if(clickListener != null) {
-                    //    clickListener.onClick(getAdapterPosition());
-                    //}
-                }
-            });
             cvCarritoNombre = itemView.findViewById(R.id.cvCarritoNombre);
             cvCarritoCantidad = itemView.findViewById(R.id.cvCarritoCantidad);
+            cvCarritoImagen = itemView.findViewById(R.id.cvCarritoImagen);
         }
     }
 }
