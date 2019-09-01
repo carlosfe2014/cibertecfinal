@@ -114,6 +114,22 @@ public class DetalleActivity extends BaseActivity implements IDetalleContract.IV
     public void getAllCarritoProductos(List<CompraProducto> compraProductoList) {
         this.detalleList.addAll(compraProductoList);
         detalleAdapter.notifyDataSetChanged();
+
+        Double metro = 0d;
+        Double plazaVea = 0d;
+        Double tottus = 0d;
+        if(compraProductoList.size() > 0){
+            for(CompraProducto producto : compraProductoList){
+                metro += producto.getPrecioMetro() * producto.getCantidad();
+                plazaVea += producto.getPrecioPlazaVea() * producto.getCantidad();
+                tottus += producto.getPrecioTottus() * producto.getCantidad();
+            }
+        }
+        tvDetallePrecioMetro.setText("S/. " + String.format("%.2f", metro));
+        tvDetallePrecioPlazaVea.setText("S/. " + String.format("%.2f", plazaVea));
+        tvDetallePrecioTottus.setText("S/. " + String.format("%.2f", tottus));
+
+
     }
 
     @Override

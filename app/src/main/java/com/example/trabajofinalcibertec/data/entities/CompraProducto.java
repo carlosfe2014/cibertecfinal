@@ -39,7 +39,7 @@ public class CompraProducto implements Serializable {
 
     @NonNull
     @ColumnInfo(name = "precio_tottus")
-    private Double precioPlazaTottus;
+    private Double precioTottus;
 
     @NonNull
     @ColumnInfo(name = "best")
@@ -50,13 +50,13 @@ public class CompraProducto implements Serializable {
     private Integer cantidad;
 
 
-    public CompraProducto(@NonNull String nombre, String descripcion, String imagen, @NonNull Double precioMetro, @NonNull Double precioPlazaVea, @NonNull Double precioPlazaTottus, @NonNull Integer best, @NonNull Integer cantidad) {
+    public CompraProducto(@NonNull String nombre, String descripcion, String imagen, @NonNull Double precioMetro, @NonNull Double precioPlazaVea, @NonNull Double precioTottus, @NonNull Integer best, @NonNull Integer cantidad) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.imagen = imagen;
         this.precioMetro = precioMetro;
         this.precioPlazaVea = precioPlazaVea;
-        this.precioPlazaTottus = precioPlazaTottus;
+        this.precioTottus = precioTottus;
         this.best = best;
         this.cantidad = cantidad;
     }
@@ -123,12 +123,12 @@ public class CompraProducto implements Serializable {
     }
 
     @NonNull
-    public Double getPrecioPlazaTottus() {
-        return precioPlazaTottus;
+    public Double getPrecioTottus() {
+        return precioTottus;
     }
 
-    public void setPrecioPlazaTottus(@NonNull Double precioPlazaTottus) {
-        this.precioPlazaTottus = precioPlazaTottus;
+    public void setPrecioTottus(@NonNull Double precioPlazaTottus) {
+        this.precioTottus = precioPlazaTottus;
     }
 
     @NonNull
